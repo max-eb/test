@@ -8,6 +8,9 @@
       <router-link :to="'/analysis/trajectory'">
         <div class="dashboard-list-item">出行轨迹分析</div>
       </router-link>
+      <router-link :to="'/analysis/residence'">
+        <div class="dashboard-list-item">人群驻留分析</div>
+      </router-link>
       <router-link :to="'/analysis/trip-mode'">
         <div class="dashboard-list-item">出行方式分析</div>
       </router-link>

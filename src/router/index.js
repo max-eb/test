@@ -137,7 +137,7 @@ export const constantRoutes = [
         path: '/analysis/trip-mode',
         component: TripMode,
         name: 'TripMode',
-        meta: { title: 'TripMode', icon: 'dashboard', affix: true }
+        meta: { title: 'Trip Mode', icon: 'dashboard', affix: true }
       }
     ]
   },

@@ -65,7 +65,7 @@ export default {
         clearInterval(this.intervalTask)
       }
 
-      createResource('http://141756eb.ngrok.io/v1/system/travel_track', { time: `${time}` })
+      createResource('http://8d2eaad5d9f9.ngrok.io/v1/system/travel_track', { time: `${time}` })
         .then((response) => {
           const { data } = response
           const newData = data.map((cData) => {

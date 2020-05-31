@@ -14,7 +14,7 @@
       <!--      <button class="check-button" v-on:click.native="updateAbnormalData">查看</button>-->
     </div>
     <div class="body-container">
-      <baidu-map class="heat-map-container" :center="{lng: 123.473215, lat: 41.680601}" :zoom="11">
+      <baidu-map class="heat-map-container" :center="{lng: 123.473215, lat: 41.680601}" :zoom="13">
         <bml-heatmap :data="heatData" :max="100" :radius="20" />
       </baidu-map>
 
@@ -53,7 +53,7 @@ export default {
     getData: function(a, c) {
       const aggregateNumber = a || `10`
       const area = c || '1500'
-      createResource('http://666b0ef6.ngrok.io/v1/system/Abnormal_aggregation',
+      createResource('http://8d2eaad5d9f9.ngrok.io/v1/system/Abnormal_aggregation',
         { 'Aggregate_number': aggregateNumber, area: area }
       ).then((response) => {
         const { data } = response

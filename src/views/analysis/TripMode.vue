@@ -22,7 +22,7 @@ export default {
     }
   },
   mounted() {
-    getResource('http://666b0ef6.ngrok.io/v1/system/Travel_label').then((response) => {
+    getResource('http://8d2eaad5d9f9.ngrok.io/v1/system/Travel_label').then((response) => {
       const { data } = response
       const tableData = data.map((dataItem) => {
         const sth = parseInt(dataItem.sttime / 60)
@@ -44,8 +44,8 @@ export default {
           stime: `0${sth}`.slice(-2) + ':' + `0${stm}`.slice(-2),
           etime: `0${enh}`.slice(-2) + ':' + `0${enm}`.slice(-2),
           label: labelText,
-          from: `${dataItem.stlon},${dataItem.stlat}`,
-          to: `${dataItem.enlon},${dataItem.enlat}`
+          from: dataItem.starting_place,
+          to: dataItem.arrived_place
         }
       })
       this.tableData = tableData
@@ -59,5 +59,6 @@ export default {
     width: 100%;
     height: 600px;
     padding: 20px;
+    overflow: scroll;
   }
 </style>

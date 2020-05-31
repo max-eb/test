@@ -3,24 +3,15 @@
     <div class="toolbar-container" />
     <baidu-map class="trajectory-map-container" :center="{lng: 123.473215, lat: 41.680601}" :zoom="12">
       <bm-polyline v-for="(polyItem, key) in polylinePath" :key="key" :path="polyItem" stroke-color="blue" :stroke-opacity="0.5" :stroke-weight="1" :editing="false" />
-      <!--      <bm-info-window v-for="infoItem in infoList" :position="infoItem.position" :show="true" v-bind:width="0" v-bind:height="0" @open="infoOpen">-->
-      <!--        <div>-->
-      <!--          <div>-->
-      <!--            <span>驻留点</span>-->
-      <!--            <span v-text="infoItem.residence"></span>-->
-      <!--          </div>-->
-      <!--          <div>-->
-      <!--            <span>驻留时长: </span>-->
-      <!--            <span v-html="`${infoItem.duration}` + '分钟'">2</span>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </bm-info-window>-->
-
       <div v-for="(item,key) in infoList" :key="key">
-        <bm-marker :position="item.position" :dragging="true" @click="lookDetail(item.position, item.residence, item.duration)" />
+        <bm-marker :position="item.position" :dragging="true" @click="lookDetail(item.position, item.id, item.residence, item.duration)" />
       </div>
       <bm-info-window :position="position" :show="show" @close="infoWindowClose" @open="infoWindowOpen">
         <div>
+          <div>
+            <span>人员编号</span>
+            <span v-text="`${id}`" />
+          </div>
           <div>
             <span>驻留点</span>
             <span v-text="`${residence}`" />
@@ -32,22 +23,6 @@
         </div>
       </bm-info-window>
     </baidu-map>
-    <!--    <baidu-map class="map" :center="{lng: 116.404, lat: 39.915}" :zoom="15" :scroll-wheel-zoom="true">-->
-    <!--&lt;!&ndash;      <bm-polyline :path="polylinePath" stroke-color="blue" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>&ndash;&gt;-->
-    <!--      <new-polyline :path="polylinePath" stroke-color="blue" :stroke-opacity="0.5" :stroke-weight="2"></new-polyline>-->
-    <!--      <bm-info-window :position="{lng: 116.404, lat: 39.915}" :show="true" v-bind:width="0" v-bind:height="0" @open="infoOpen">-->
-    <!--        <div>-->
-    <!--          <div>-->
-    <!--            <span>驻留点</span>-->
-    <!--            <span>1</span>-->
-    <!--          </div>-->
-    <!--          <div>-->
-    <!--            <span>驻留时长: </span>-->
-    <!--            <span>2分钟</span>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </bm-info-window>-->
-    <!--    </baidu-map>-->
   </div>
 </template>
 
@@ -60,6 +35,7 @@ export default {
       polylinePath: [],
       infoList: [],
       show: false,
+      id: '',
       residence: '',
       duration: ''
     }
@@ -68,9 +44,10 @@ export default {
     this.retrieveData()
   },
   methods: {
-    lookDetail(item, res, dur) {
+    lookDetail(item, id, res, dur) {
       this.position = item
       this.show = true
+      this.id = id
       this.residence = res
       this.duration = dur
     },
@@ -90,7 +67,7 @@ export default {
       console.log('nodes:', nodes, nodes[0])
     },
     retrieveData: function() {
-      getResource('http://6eac1419e491.ngrok.io/v1/system/Residence')
+      getResource('http://8d2eaad5d9f9.ngrok.io/v1/system/Residence')
         .then((response) => {
           const { data } = response
           const innerLineList = []
@@ -114,9 +91,11 @@ export default {
 
           const infoData = []
           data.forEach((cData) => {
+            const id = cData.id
             const lineList = cData.line
             lineList.forEach((lineItem) => {
               infoData.push({
+                id,
                 residence: lineItem[0].residence,
                 duration: lineItem[0].duration,
                 position: {
@@ -125,6 +104,7 @@ export default {
                 }
               })
               infoData.push({
+                id,
                 residence: lineItem[1].residence,
                 duration: lineItem[1].duration,
                 position: {
